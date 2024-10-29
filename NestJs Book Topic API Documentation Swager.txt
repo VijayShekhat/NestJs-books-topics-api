@@ -1,0 +1,177 @@
+openapi: 3.0.0
+info:
+  title: NestJs Book Topic API
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Topic
+  - name: Book
+paths:
+  /topics:
+    get:
+      tags:
+        - Topic
+      summary: GetAll
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Topic
+      summary: Create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Topic 9
+                description: Test description
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /topics/6720840c8361890e4e8ff3b1:
+    get:
+      tags:
+        - Topic
+      summary: GetById
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Topic
+      summary: Delete
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /topics/67209e024ea80ba5363386e7:
+    put:
+      tags:
+        - Topic
+      summary: Update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Topic 9
+                description: Test description updated
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /books:
+    get:
+      tags:
+        - Book
+      summary: GetAll
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          example: Topic 1
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Book
+      summary: Create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Book demo
+                author: Vijay Shekhat
+                publishedDate: '2024-10-29'
+                isbn: ISBN45782368
+                topics:
+                  - 672084f08361890e4e8ff3bb
+                  - 672084f68361890e4e8ff3bd
+                  - 672084fb8361890e4e8ff3bf
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /books/67209985cfef8afabade0d2c:
+    get:
+      tags:
+        - Book
+      summary: GetById
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - Book
+      summary: Update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Book 1
+                author: Vijay Shekhat
+                publishedDate: '2024-10-29'
+                isbn: ISBN45782364
+                topics:
+                  - 672084f08361890e4e8ff3bb
+                  - 672084f68361890e4e8ff3bd
+                  - 672084fb8361890e4e8ff3bf
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /books/topic/672084fb8361890e4e8ff3bf:
+    get:
+      tags:
+        - Book
+      summary: GetBooksByTopicId
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /books/6720a0327aa645293ae11d17:
+    delete:
+      tags:
+        - Book
+      summary: Delete
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
