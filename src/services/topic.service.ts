@@ -5,6 +5,7 @@ import { Topic } from "src/entities/topic.entity";
 import { Query } from 'express-serve-static-core';
 import { CreateTopicDto } from "src/dtoes/create-topic.dto";
 import { UpdateTopicDto } from "src/dtoes/update-topic.dto";
+import { Types } from "mongoose";
 
 
 @Injectable()
@@ -91,6 +92,25 @@ export class TopicService {
         }
 
         return deletedTopic
+    }
+
+    async validateTopicIds(topicIds: string[]) {
+        const invalidIds = [];
+    
+        for (const id of topicIds) {
+          if (!Types.ObjectId.isValid(id)) {
+            invalidIds.push(id);
+          } else {
+            const exists = await this.topicModel.findById(id);
+            if (!exists) {
+              invalidIds.push(id);
+            }
+          }
+        }
+    
+        if (invalidIds.length > 0) {
+          throw new BadRequestException(`Invalid topic IDs: ${invalidIds.join(', ')}`);
+        }
     }
 
 }

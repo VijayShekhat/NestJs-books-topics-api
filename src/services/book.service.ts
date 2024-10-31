@@ -6,6 +6,7 @@ import { Query } from 'express-serve-static-core';
 import { CreateBookDto } from "src/dtoes/create-book.dto";
 import { UpdateBookDto } from "src/dtoes/update-book.dto";
 import { Topic } from "src/entities/topic.entity";
+import { TopicService } from "./topic.service";
 
 
 
@@ -15,7 +16,8 @@ export class BookService {
         @InjectModel(Book.name)
         private bookModel: mongoose.Model<Book>,
         @InjectModel(Topic.name)
-        private topicModel: mongoose.Model<Topic>
+        private topicModel: mongoose.Model<Topic>,
+        private readonly topicService: TopicService
     ) {}
 
     async findAll(query: Query): Promise<Book[]> {
@@ -48,8 +50,11 @@ export class BookService {
             .limit(resPerPage)
             .skip(skip)
             .populate('topics'); // Populate topics if needed
+
+            if (!books) {
+                return [];
+            }
     
-         
         return books;
     }
 
@@ -74,6 +79,8 @@ export class BookService {
         if (existingBook) {
             throw new ConflictException('A book with this ISBN already exists.');
         }
+
+        await this.topicService.validateTopicIds(book.topics);
         
         const newBook = await this.bookModel.create(book)
 
@@ -93,6 +100,8 @@ export class BookService {
         if (existingBook) {
             throw new ConflictException('A book with this ISBN already exists.');
         }
+
+        await this.topicService.validateTopicIds(book.topics);
 
         const updatedBook = await this.bookModel.findByIdAndUpdate(id, book, {
             new: true,
